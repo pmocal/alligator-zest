@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul class="frame">
+    <ul class="gallery">
       <li v-for="n in 5" :key="n">
         <img
           @click="highlight"
@@ -8,17 +8,26 @@
         >
       </li>
     </ul>
+    <div id="frame">
+      <img
+        :src="this.theatrical"
+      >
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'PhotoGallery',
-  props: {
+  data() {
+    return {
+      theatrical: ""
+    }
   },
   methods: {
     highlight() {
       event.target.id = "theater";
+      this.theatrical = event.target.src;
       let eventIterator = event.target.parentNode;
       while (eventIterator.previousElementSibling != null) {
         eventIterator.previousElementSibling.getElementsByTagName('img')[0].id = "";
@@ -49,9 +58,12 @@ li {
 a {
   color: #42b983;
 }
-.frame {
+.gallery {
   display: flex;
   justify-content: space-around;
+}
+#frame img {
+  width: 80%;
 }
 img {
   width: 20%;
