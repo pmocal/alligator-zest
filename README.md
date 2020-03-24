@@ -127,7 +127,7 @@ img {
 </style>
 ```
 
-This gives us a basic photo gallery, assuming you have 5 photo files in the `assets/photos/beijing` folder named `1.jpeg` through `5.jpeg`. The `@` symbol is a Webpack alias that points to the `src` folder. Note the `display: flex` on `"gallery"` as well as the `v-for` in the `<li>` tag.Let's update this code so that when we click on a photo it is enlarged.
+This gives us a basic photo gallery, assuming you have 5 photo files in the `assets/photos/beijing` folder named `1.jpeg` through `5.jpeg`. The `@` symbol is a Webpack alias that points to the `src` folder. Note the `display: flex` on `"gallery"` as well as the `v-for` in the `<li>` tag. Let's update this code so that when we click on a photo it is enlarged.
 
 <p class="file-desc"><span>PhotoGallery.vue</span></p>
 
@@ -190,7 +190,7 @@ img {
 
 We added a `v-on:click` to each image firing the `highlight()` method. This method makes the image you click on enlarge while keeping the others thumbnail sized. How does it do it? It sets the `id` of the clicked image to `"theater"` which has a larger width. Then, it gets the sibling nodes of the parent node of the image, the `li` with the `v-for` in it. It goes into all of these `li` tags and sets their respective `img` tag's `id` to a null string to make sure that only one `img` has the `"theater"` `id` at any given time.
 
-Now this is cool but still not exactly what we see on the web; how can we get the enlarged image to be a big display, say under the 5 thumbnails? Then we would have a roll of thumbnails with the selected image enlarged to a real theater size.
+This is cool but it is still not  what we see on the web; how can we get the enlarged image to be a big display, say under the 5 thumbnails? The end result would be a roll of thumbnails with the selected image enlarged to a real theater size right below.
 
 We're going to add the following:
 
