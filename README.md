@@ -194,14 +194,13 @@ Now this is cool but still not exactly what we see on the web; how can we get th
 
 We're going to add the following:
 
-<pre><code class="html">
+```html
 <div id="frame">
   <img
     :src="this.theatrical"
   >
 </div>
-</code></pre>
-
+```
 <pre><code class="javascript">
 data() {
   return {
