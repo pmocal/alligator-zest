@@ -1,5 +1,7 @@
 # alligator-zest --- a repo for teaching Vue Template Syntax
 
+![screenshot.png](screenshot.png)
+
 ## Vue Template Syntax
 
 **Vue** is best used when using its templating features. It becomes very intuitive to build fancy user interfaces.
