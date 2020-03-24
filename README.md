@@ -12,9 +12,13 @@ You could have a variable `url` in your Vue instance that your anchor tag uses a
 
 `<a v-bind:href="url"></a>`
 
-Let's try it with the other directive that we will find ourselves using a lot.
+Let's try it with the other directive that we will find ourselves using a lot:
 
-`<a v-on:click:"myFunction"></a>` is how we would call one of our component's functions upon clicking the link.
+`<a v-on:click:"myFunction"></a>`
+
+That is how we would call one of our component's functions upon clicking the link.
+
+---
 
 Dynamic arguments take your directives to a new level. Consider the following:
 
@@ -24,15 +28,21 @@ Dynamic arguments take your directives to a new level. Consider the following:
 
  `<a v-on:[event]="myFunction"></a>` would mean that the event variable could be `"hover"` or `"click"` or any other attribute used with `v-on`.
 
-Let's go over one more thing. The directives `v-on` and `v-bind` are so common that we have shortcuts for writing them in Vue; `:` and `@`. So, an `img` tag with a dynamic attribute could be `<img :[classOrId]="value" @click="display">` where `display` is a function, `value` is a string variable, and `classOrId` is also a string variable.
+---
 
-Today we are going to create a photo gallery with some of this new fangled syntax. Get ready!
+Let's go over one more thing.
+
+The directives `v-on` and `v-bind` are so common that we have shortcuts for writing them in Vue; `:` and `@`.
+
+So, an `img` tag with a dynamic attribute could be `<img :[classOrId]="value" @click="display">` where `display` is a function, `value` is a string variable, and `classOrId` is also a string variable.
 
 ---
 
-### Coding
+Today we are going to create a photo gallery with some of this new fangled syntax. Get ready!
 
-## Setup
+## Coding
+
+### Setup
 
 Start by running either
 ```bash
@@ -40,18 +50,23 @@ $ npm install -g @vue/cli
 ```
 or
 ```bash
-yarn global add @vue/cli
+$ yarn global add @vue/cli
 ```
 in your Terminal.
 
-Now you will be able to run the `vue` command from the command line. Let us create a Vue application called alligator-test.
+Now you will be able to run the `vue` command from the command line. Let us create a Vue application called alligator-zest.
 ```bash
-vue create alligator-test
+$ vue create alligator-zest
+$ cd alligator-zest
+$ npm run build
+$ npm run serve
 ```
 
 ---
 
 We're going to change `HelloWorld.vue` to be `PhotoGallery.vue`. `App.vue` should look something like this:
+
+<p class="file-desc"><span>App.vue</span></p>
 
 ```vuejs
 <template>
@@ -85,7 +100,9 @@ export default {
 
 `PhotoGallery.vue` is where we're about to get fancy while keeping things simple at the same time.
 
-## Building our Gallery
+### Building our gallery
+
+Let's assume we have 5 photo files in the `assets/photos` folder named `1.jpeg` through `5.jpeg`. Use any images you want.
 
 <p class="file-desc"><span>PhotoGallery.vue</span></p>
 
@@ -95,7 +112,7 @@ export default {
     <ul class="gallery">
       <li v-for="n in 5" :key="n">
         <img
-          :src="require('@/assets/photos/beijing/' + n + '.jpeg')"
+          :src="require('@/assets/photos/' + n + '.jpeg')"
         >
       </li>
     </ul>
@@ -127,7 +144,11 @@ img {
 </style>
 ```
 
-This gives us a basic photo gallery, assuming you have 5 photo files in the `assets/photos/beijing` folder named `1.jpeg` through `5.jpeg`. The `@` symbol is a Webpack alias that points to the `src` folder. Note the `display: flex` on `"gallery"` as well as the `v-for` in the `<li>` tag. Let's update this code so that when we click on a photo it is enlarged.
+<p class="info-box">The `@` symbol is a Webpack alias that points to the `src` folder.</p>
+
+Note the `display: flex` on `"gallery"` as well as the `v-for` in the `<li>` tag. You should be able to see the app in your browser at `localhost:8080`.
+
+Let's update this code so that when we click on a photo it is enlarged.
 
 <p class="file-desc"><span>PhotoGallery.vue</span></p>
 
@@ -188,9 +209,16 @@ img {
 </style>
 ```
 
-We added a `v-on:click` to each image firing the `highlight()` method. This method makes the image you click on enlarge while keeping the others thumbnail sized. How does it do it? It sets the `id` of the clicked image to `"theater"` which has a larger width. Then, it gets the sibling nodes of the parent node of the image, the `li` with the `v-for` in it. It goes into all of these `li` tags and sets their respective `img` tag's `id` to a null string to make sure that only one `img` has the `"theater"` `id` at any given time.
+We added a `v-on:click` to each image that sets off the `highlight()` method. This method makes the image that is clicked on become larger while ensuring that the others are thumbnail sized.
 
-This is cool but it is still not  what we see on the web; how can we get the enlarged image to be a big display, say under the 5 thumbnails? The end result would be a roll of thumbnails with the selected image enlarged to a real theater size right below.
+
+<gator-collapse title="How does it do it?!">
+  <p>It sets the id of the clicked image to "theater" which has a larger width. Then, it gets the sibling nodes of the parent node of the image, the li with the v-for in it. It goes into all of these li tags and sets their respective img tag's id to a null string to make sure that only one img has the "theater" id at any given time.</p>
+</gator-collapse>
+
+This is cool but it is still not  what we see on the web; how can we get the enlarged image to be a big display, say, under the 5 thumbnails? The end result would be a roll of thumbnails with the selected image enlarged to a real theater size right below. Sounds good, right?
+
+---
 
 We're going to add the following:
 
@@ -221,7 +249,13 @@ And finally, add the following to your CSS.
 }
 </code></pre>
 
-Now you have a nice gallery view of your photos! All with some nifty use of Vue's reactivity system, data properties, template syntax, 
+<p class="info-box success">
+	Check it out in your browser!
+</p>
+
+The big frame is filled up by the photo that you clicked on since its `src` gets set when you click. Now you have a nice gallery view of your photos!
+
+All with some nifty use of Vue's reactivity system, data properties, and template syntax 🧪
 
 ## Project setup
 ```
