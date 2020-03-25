@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <PhotoGallery/>
+    <PhotoGallery v-on:theater-mode="setBackground($event)"/>
   </div>
 </template>
 
@@ -11,6 +11,12 @@ export default {
   name: 'App',
   components: {
     PhotoGallery
+  },
+  methods: {
+    setBackground(color) {
+      console.log(color.rgba);
+      document.querySelector('body').style.backgroundColor = color.rgba;
+    }
   }
 }
 </script>

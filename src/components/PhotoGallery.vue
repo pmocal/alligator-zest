@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import FastAverageColor from 'fast-average-color';
+
 export default {
   name: 'PhotoGallery',
   data() {
@@ -27,6 +29,7 @@ export default {
   methods: {
     highlight() {
       event.target.id = "theater";
+      var that = this;
       this.theatrical = event.target.src;
       let eventIterator = event.target.parentNode;
       while (eventIterator.previousElementSibling != null) {
@@ -38,6 +41,16 @@ export default {
         eventIterator.nextElementSibling.getElementsByTagName('img')[0].id = "";
         eventIterator = eventIterator.nextElementSibling;
       }
+      const fac = new FastAverageColor();
+      fac.getColorAsync(event.target)
+          .then(function(color) {
+              // container.style.backgroundColor = color.rgba;
+              // container.style.color = color.isDark ? '#fff' : '#000';
+              that.$emit('theater-mode', color);
+          })
+          .catch(function(e) {
+              console.log(e);
+          });
     }
   }
 }
