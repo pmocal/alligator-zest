@@ -44,9 +44,7 @@ export default {
       const fac = new FastAverageColor();
       fac.getColorAsync(event.target)
           .then(function(color) {
-              // container.style.backgroundColor = color.rgba;
-              // container.style.color = color.isDark ? '#fff' : '#000';
-              that.$emit('theater-mode', color);
+              that.$emit('theater-mode', color.rgba);
           })
           .catch(function(e) {
               console.log(e);

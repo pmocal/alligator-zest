@@ -13,9 +13,8 @@ export default {
     PhotoGallery
   },
   methods: {
-    setBackground(color) {
-      console.log(color.rgba);
-      document.querySelector('body').style.backgroundColor = color.rgba;
+    setBackground(rgba) {
+      document.querySelector('body').style.backgroundColor = rgba;
     }
   }
 }
