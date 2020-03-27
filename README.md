@@ -1,6 +1,6 @@
 # alligator-zest | a repo for teaching Vue Template Syntax & Custom Events
 
-![screenshot.png](screenshot.png)
+![screenshot1.png](screenshot1.png)
 
 ## Vue Template Syntax
 
