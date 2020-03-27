@@ -1,10 +1,14 @@
 # alligator-zest
 
-This app showcases 2 features of Vue that I wrote tutorials on: Vue template syntax and Vue custom events. Read on for the tutorial! Fully styled version of the first one at https://alligator.io/vuejs/vue-template-syntax/.
+This app showcases 2 features of Vue that I wrote tutorials on: Vue template syntax and Vue custom events. Read on for the tutorials! 
+
+If you want to see the fully styled version, visit https://alligator.io/vuejs/vue-template-syntax/.
+
+## Screenshot
 
 ![screenshot1.png](screenshot1.png)
 
-## Vue Template Syntax
+# Vue Template Syntax Tutorial
 
 **Vue** is best used when using its templating features. It becomes very intuitive to build fancy user interfaces.
 
@@ -261,7 +265,7 @@ All with some nifty use of Vue's reactivity system, data properties, and templat
 
 ---
 
-## Custom Events
+# Custom Events
 
 `v-on:click`. `v-on:hover`. We know those from [Vue Template Syntax](https://alligator.io/vuejs/vue-template-syntax/). `v-on` allows us to listen for `click` or `hover` events that occur on a particular tag and, as a result, fire off a particular function. If `someFunction` was defined in the `methods` section of our component, we could use `v-on:click=someFunction` in our template. **Vue.js** also allows you to listen for **custom events**, which has its most important usecase in allowing child components to fire off events that parent components can listen for.
 
@@ -570,7 +574,9 @@ So, we write the following:
 </template>
 ```
 
-Check back to your browser and congratulations!
+## Congratulations!
+
+Check your browser. Your app should be working just as we intended it to. Good job and bon voyage! 🚢
 
 ## Project setup
 ```
