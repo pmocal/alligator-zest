@@ -578,7 +578,7 @@ So, we write the following:
 
 Check your browser. Your app should be working just as we intended it to. Good job and bon voyage! 🚢
 
-## Project setup
+# Project setup
 ```
 npm install
 ```
