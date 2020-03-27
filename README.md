@@ -1,4 +1,4 @@
-# alligator-zest | Tutorial for Vue Template Syntax & Custom Events
+# alligator-zest, tutorial for Vue Template Syntax & Custom Events
 
 ![screenshot1.png](screenshot1.png)
 
