@@ -267,15 +267,13 @@ All with some nifty use of Vue's reactivity system, data properties, and templat
 
 # Custom Events
 
-`v-on:click`. `v-on:hover`. We know those from [Vue Template Syntax](https://alligator.io/vuejs/vue-template-syntax/). `v-on` allows us to listen for `click` or `hover` events that occur on a particular tag and, as a result, fire off a particular function. If `someFunction` was defined in the `methods` section of our component, we could use `v-on:click=someFunction` in our template. **Vue.js** also allows you to listen for **custom events**, which has its most important usecase in allowing child components to fire off events that parent components can listen for.
+`v-on:click`. `v-on:hover`. We know those from [Vue Template Syntax](https://alligator.io/vuejs/vue-template-syntax/). `v-on` allows you to listen for `click` or `hover` events that occur on a particular tag and run some JS code. If `someFunction` was defined in the `methods` section of your Vue component, you could use `v-on:click=someFunction` in your template. Vue.js also allows you to listen for **custom events**, an ability which has its most important usecase in allowing child components to fire off events that parent components can listen for.
 
-In [Vue Template Syntax](https://alligator.io/vuejs/vue-template-syntax/) we created a photo gallery component. You could click any of the photos in a row of thumbnails and the photo you clicked on would be displayed in a large size below. Now, what if we wanted the background of the entire page to be set to the average color of the photo being displayed in a large size? We could call this "theater mode" for fun.
+We created a photo gallery component in [Vue Template Syntax](https://alligator.io/vuejs/vue-template-syntax/). You could click any of the photos in a row of thumbnails and the photo you clicked on would be displayed in a large size below. Now, what if we wanted the background of the entire page to be set to the average color of the photo being displayed? We could call this "theater mode" for fun.
 
-To do this, the parent component of the photo gallery, `App.vue`, would need to be receive the average RGB value of the photo from its child component, `PhotoGallery.vue`, when the photo is clicked.
+The power of **custom events** is that we can fairly easily do that. The parent component of the photo gallery, `App.vue`, simply needs to receive the average RGB value of the photo from its child component, `PhotoGallery.vue`, when the photo is clicked.
 
-This is the power of custom events.
-
-Let's get started. If you did the Template Syntax tutorial you already have all of the code in the **Setup** section of this tutorial.
+Let's get started. This tutorial picks up where the Template Syntax tutorial left off so skip the **Setup** section of this tutorial if you already did that one.
 
 ## Setup
 
@@ -421,15 +419,34 @@ export default {
 
 ## Let's write some code
 
-We're going to use an `npm` library called `fast-average-color` to get the average color value for a particular photo. At the top of the `script` section of `PhotoGallery.vue` let's import FastAverageColor.
+We're going to use an `npm` library called `fast-average-color` to get the average color value for a particular photo. Import it at the top of the `<script>` section of `PhotoGallery.vue`.
 
 <pre><code class="javascript">
 import from 'fast-average-color';
 </code></pre>
 
-`PhotoGallery` has a method `highlight` which is triggered by clicking on an image. Let's add our color averaging logic to the end of the `highlight` method. We already used `event.target` in that method. The value of `event.target` is the element that was clicked on. The image we want to get the average color of.
+`PhotoGallery.vue` has a method `highlight()` which is triggered when you click on one of the photos.
 
-By perusing the `fast-average-color` docs, we can find the `getColorAsync` function, which returns a color object. Ultimately, we can access the average rgb value of via `color.rgba`. 
+<pre><code class="javascript">
+highlight() {
+  event.target.id = "theater";
+  this.theatrical = event.target.src;
+  let eventIterator = event.target.parentNode;
+  while (eventIterator.previousElementSibling != null) {
+    eventIterator.previousElementSibling.getElementsByTagName('img')[0].id = "";
+    eventIterator = eventIterator.previousElementSibling;
+  }
+  eventIterator = event.target.parentNode;
+  while (eventIterator.nextElementSibling != null) {
+    eventIterator.nextElementSibling.getElementsByTagName('img')[0].id = "";
+    eventIterator = eventIterator.nextElementSibling;
+  }
+}
+</code></pre>
+
+This method displays the clicked photo in a larger size below the thumbnails. Notice that we used `event.target` all over the method. `event.target` is the element that was clicked on. This is the image that we want to get the average color of.
+
+By perusing the `fast-average-color` docs, we can find the `getColorAsync` function, which returns a color object where `color.rgba` is the average RGB value. Let's go ahead and make that function call.
 
 <pre><code class="javascript">
 const fac = new FastAverageColor();
@@ -441,7 +458,7 @@ fac.getColorAsync(event.target)
     });
 </code></pre>
 
-We need to do something with the value `color.rgba`; in `App.vue` we need to set the background color to that value. Let's not yet worry about how the value gets to `App.vue`. Let's assume that it will and let's write the method in `App.vue` which takes `rgba` as a parameter and sets the background color.
+We're not yet doing anything with `color`. Ultimately, we need to set the background color to `color.rgba` in `App.vue`. `App.vue` is going to have a method that takes `color.rgba` as a parameter. Why don't we just go ahead and write that method?
 
 <pre><code class="javascript">
 methods: {
@@ -453,7 +470,7 @@ methods: {
 
 That should look good to you!
 
-Now, let's look at the template section of this file.
+Take a look at the template section of `App.vue`. Here is how it looks right now:
 
 ```html
 <template>
@@ -463,11 +480,13 @@ Now, let's look at the template section of this file.
 </template>
 ```
 
-We need the `App` component to pick up an event from the `PhotoGallery` component. Let's call our event `theater-mode`. If we want to listen for an event in our component, the syntax is just like for regular events. That is: `v-on:theater-mode`. We want to call our `setBackground` method whenever that event occurs.
+The `App` component is going to have to pick up an event from the `PhotoGallery` component--a custom event. Say the event was called `theater-mode`; when we want to listen for such an event in our component, the syntax is just like for regular events. That is, it would be: `v-on:theater-mode`. When `theater-mode` occurs we'll call our `setBackground` method.
 
-Let's head back to `PhotoGallery.vue` where we need to send `App.vue` the value `color.rgba`.
+Now we need to send the value `color.rgba` to `App.vue` somehow. Go back to `PhotoGallery.vue`.
 
-Every Vue component has a method `$emit` which allows you to trigger an event, in our case one called `theater-mode`. We're going to call `this.$emit` inside the `then` function from earlier. Let's jog your memory.
+---
+
+Every Vue component has a method `$emit`. This method allows you to trigger an event, in our case one called `theater-mode`. We're going to call `this.$emit` inside the `then` function from the async call we made to the color library. Let's jog your memory.
 
 <pre><code class="javascript">
 highlight() {
@@ -493,12 +512,11 @@ highlight() {
 }
 </code></pre>
 
-`this.$emit` takes the event name as its first argument and has optional further arguments in which you can pass data. We will pass `color.rgba`. So our function call is going to look like `this.$emit('theater-mode', color.rgba)`. Since it is going to go in that `then` function, the `this` keyword may no longer refer to our Vue component as it normally does. So we're also going to add one more simple line at the beginning of the `highlight` function. Here's our new function:
+`this.$emit` takes the event name as its first argument and has optional further arguments in which you can pass data. We will pass `color.rgba`. So our function call is going to look like `this.$emit('theater-mode', color.rgba)`.  Here's our new function:
 
 <pre><code class="javascript">
 highlight() {
   event.target.id = "theater";
-  var that = this;
   this.theatrical = event.target.src;
   let eventIterator = event.target.parentNode;
   while (eventIterator.previousElementSibling != null) {
@@ -512,18 +530,14 @@ highlight() {
   }
   const fac = new FastAverageColor();
   fac.getColorAsync(event.target)
-      .then(function(color) {
-          that.$emit('theater-mode', color.rgba);
-      })
+      .then((color) => this.$emit('theater-mode', color.rgba))
       .catch(function(e) {
           console.log(e);
       });
 }
 </code></pre>
 
-That should look good to you! We saved a pointer to our Vue component to use later.
-
-Let's look back at `App.vue`.
+That should look good to you! Let's look back at `App.vue`.
 
 <p class="file-desc"><span>App.vue</span></p>
 
