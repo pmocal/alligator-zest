@@ -1,4 +1,6 @@
-# alligator-zest --- learn Vue Template Syntax & Custom Events
+# alligator-zest
+
+This app showcases 2 features of Vue that I wrote tutorials on: Vue template syntax and Vue custom events. Read on for the tutorial! Fully styled version of the first one at https://alligator.io/vuejs/vue-template-syntax/.
 
 ![screenshot1.png](screenshot1.png)
 
